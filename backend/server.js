@@ -7,7 +7,7 @@ const app = express();
 
 //connect to db
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://altinsyla997:N9xUmldDKypVWnW1@webprogramming.wluex0n.mongodb.net/?retryWrites=true&w=majority&appName=WebProgramming"
+const uri = "mongodb+srv://altinsyla997:SFEYGLL8OPDh2Ht7@webprogramming.wluex0n.mongodb.net/?retryWrites=true&w=majority&appName=WebProgramming"
 mongoose.connect(uri)
 .then(() => 
         console.log('Connected to MongoDB'))
@@ -21,31 +21,41 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 app.get('/api/test', async(req, res) => {
-    //Krijimi i userit te ri
-    const newUser = new User({
-        name: 'new',
-        gender: 'm'
-    })
-    const savedUser = await newUser.save();
-    res.json(savedUser);
+    //krijimi i userave te ri
+    
+    await User.findByIdAndDelete('660be69057c7d9adcaddf960');
+    res.json('User deleted successfully!');
 });
 
-//this send Users data's to the local host 5001
-app.use(cors());
-app.use(express.json());
+
+
+// Routes
+// Me marr ni user t'ri
 app.get('/api/users', async(req, res) => {
-    const users = [
-        {
-        name: 'Altin',
-        gender: 'm'
-        },
-        {
-        name: 'Blerona',
-        gender: 'f'
-        }
-];
-    res.json(savedUser);
+    const users = await User.find({});
+    res.json(users);
 });
+
+//Me shtu ni user t'ri
+app.post('/api/user',async(req,res)=>{
+    const newUser=new User  ({name: 'Altin', gender: 'm'});
+    const savedUser=await newUser.save();
+    res.json(savedUser);
+})
+
+//Me bo update ni user
+app.put('api/user/:id', async (req, res) => {
+    const {id} = req.params;
+    const updateUser = await User
+    .findByIdAndUpdate(id, req.body, {new: true})     //ose const  id = req.params.id
+})
+
+//Me fshi ni user
+app.delete('api/users/:id', async (req, res) => {
+    const {id} = req.params;
+    await User.findByIdAndDelete(id);
+    res.json({message: 'User deleted succesfully!'});
+})
 
 // Listen for requests
 app.listen(port, () => {
