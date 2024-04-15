@@ -7,7 +7,7 @@ const app = express();
 
 //connect to db
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://altinsyla997:SFEYGLL8OPDh2Ht7@webprogramming.wluex0n.mongodb.net/?retryWrites=true&w=majority&appName=WebProgramming"
+const uri = "mongodb+srv://altinsyla997:f9hWxcrjx2qstuTu@webprogramming.wluex0n.mongodb.net/?retryWrites=true&w=majority&appName=WebProgramming"
 mongoose.connect(uri)
 .then(() => 
         console.log('Connected to MongoDB'))
@@ -27,6 +27,16 @@ app.get('/api/test', async(req, res) => {
     res.json('User deleted successfully!');
 });
 
+const TaskSchema = new mongoose.Schema({
+    name: String,
+    description: String
+});
+
+const Task = mongoose.model('Task', TaskSchema);
+app.get('/api/test', async(req, res) => {
+    await Task.findByIdAndDelete('');
+    res.json('Task deleted succesfully!')
+});
 
 
 // Routes
@@ -55,6 +65,38 @@ app.delete('api/users/:id', async (req, res) => {
     const {id} = req.params;
     await User.findByIdAndDelete(id);
     res.json({message: 'User deleted succesfully!'});
+})
+
+//Tasks
+app.get('/api/test', async(req, res) => {
+    await Task.findByIdAndDelete('');
+    res.json('Task deleted succesfully!')
+});
+
+app.get('/api/tasks', async(req, res) => {
+    const tasks = await Task.find({});
+    res.json(tasks);
+});
+
+//Me shtu ni user t'ri
+app.post('/api/task',async(req,res)=>{
+    const newTask=new Task  ({name: 'LinkedIn', description: 'Post a blog!'});
+    const savedTask=await newTask.save();
+    res.json(savedTask);
+})
+
+//Me bo update ni user
+app.put('api/task/:id', async (req, res) => {
+    const {id} = req.params;
+    const updateTask = await Task
+    .findByIdAndUpdate(id, req.body, {new: true})     //ose const  id = req.params.id
+})
+
+//Me fshi ni user
+app.delete('api/tasks/:id', async (req, res) => {
+    const {id} = req.params;
+    await Task.findByIdAndDelete(id);
+    res.json({message: 'Task deleted succesfully!'});
 })
 
 // Listen for requests
