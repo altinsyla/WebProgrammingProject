@@ -79,8 +79,8 @@ app.get('/api/tasks', async(req, res) => {
 });
 
 //Me shtu ni user t'ri
-app.post('/api/task',async(req,res)=>{
-    const newTask=new Task  ({name: 'LinkedIn', description: 'Post a blog!'});
+app.get('/api/task',async(req,res)=>{
+    const newTask=new Task  ({name: 'Food', description: 'Go eat some food!'});
     const savedTask=await newTask.save();
     res.json(savedTask);
 })
