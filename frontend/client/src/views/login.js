@@ -13,7 +13,7 @@ import {
     Row,
     Col,
   } from "reactstrap";
-
+import axios from "axios";
   
   
   const Login = () => {
@@ -25,9 +25,16 @@ import {
 
   const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log('test');
-    console.log(email, password);
-  }
+    try{
+      const response =
+       await axios.post('http://localhost:5001/api/login',
+      {email,password} 
+      );
+    console.log(response.data)
+    } catch(error){
+      console.log("Login error", error?.response?.data)
+    }
+  };
     return (
       <>
         <Col lg="5" md="7">

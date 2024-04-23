@@ -16,21 +16,21 @@ import {
 import axios from "axios";
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState(''); //variabla per emrin
+  const [email, setEmail] = useState(''); //variabla per email
+  const [password, setPassword] = useState(''); //variabla per passowrd
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-  };
+  }; //kto i vendosim te Inputi i Emailit pra value = email, onchange handleEmailChange
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  };
+  }; //kto i vendosim te Inputi i Passwordit pra value = password, onchange handlePasswordChange
 
   const handleNameChange = (e) => {
     setName(e.target.value);
-  };
+  }; //kto i vendosim te Inputi i Emrit pra value = emri, onchange handleNameChange
 
 
   const handleSubmit = async(e) => {
@@ -38,12 +38,12 @@ const Register = () => {
     try{
       const response =
        await axios.post('http://localhost:5001/api/register',
-      {name,email,password}
+      {name, email, password} 
       );
     console.log(response.data)
     } catch(error){
       console.log("Login error", error?.response?.data)
-    }
+    } //na mundeson me klikimin e buttonit Submit mu kry qikjo funksion, e qiky funksion e merr name email password tvendosur i run DB
    
   };
   return (
@@ -106,8 +106,8 @@ const Register = () => {
                   <Input placeholder="Name" type="text" 
 
                   autoComplete="new-name"
-                  value={name}
-                  onChange={handleNameChange}
+                  value={name} // kjo vjen prej nalt
+                  onChange={handleNameChange} //emri i ri i vendosur
                 />
                 </InputGroup>
               </FormGroup>
@@ -122,8 +122,8 @@ const Register = () => {
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
-                    value={email}
-                    onChange={handleEmailChange}
+                    value={email} //emaili 
+                    onChange={handleEmailChange} //emaili i ri i vendosur
                   />
                 </InputGroup>
               </FormGroup>
@@ -138,8 +138,8 @@ const Register = () => {
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
-                    value={password}
-                    onChange={handlePasswordChange}
+                    value={password} //passwordi
+                    onChange={handlePasswordChange} //paswordi i ri i vendosur
                   />
                 </InputGroup>
               </FormGroup>
@@ -174,7 +174,7 @@ const Register = () => {
               <div className="text-center">
                 <Button className="mt-4" color="primary" onClick={handleSubmit} type="submit">
                   Create account
-                </Button>
+                </Button>  
               </div>
             </Form>
           </CardBody>

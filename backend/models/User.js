@@ -13,8 +13,13 @@ UserSchema.pre('save', async function(next) {
     if(!this.isModified('password')) {
         return next();
     }
-    this.password = await bcrypt.hash(this.password, 12)
+    const salt = await bcrypt.genSalt(12)
+    this.password = await bcrypt.hash(this.password)
     next();
 }) 
+
+UserSchema.methods.isValidPassword = async function(password) {
+    return bcrypt.compare(password, this.password);
+}
 
 module.exports = mongoose.model('User', UserSchema);

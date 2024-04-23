@@ -6,18 +6,49 @@ const port = process.env.PORT || 5001;
 const app = express();
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
+const bcrypt = require("bcryptjs");
 
 app.use(cors());
 app.use(express.json());
 
 //connect to db
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://altinsyla997:f9hWxcrjx2qstuTu@webprogramming.wluex0n.mongodb.net/?retryWrites=true&w=majority&appName=WebProgramming"
+const uri = "mongodb+srv://altinsyla997:altinsyla123@webprogramming.wluex0n.mongodb.net/?retryWrites=true&w=majority&appName=WebProgramming"
 mongoose.connect(uri)
 .then(() => 
         console.log('Connected to MongoDB'))
 .catch((error) => 
     console.log("Couldn't connect to MongoDB", error))
+
+//Route per register
+app.post('/api/register', async(req, res) => {
+    try{
+        // res.json('ook!')
+        const {name, email, password} = req.body;
+        const user = new User({name, email, password});
+        // res.json(user);
+        //opsion tjeter const name = req.body.name / const email = req.body.email / const password = req.body.passowrd
+        await user.save();
+        res.status(201).send('User registered!');
+    } catch(error) {
+        res.status(500).json({error: 'Error on registration!'});
+    }
+});
+
+app.post('/api/login', async(req, res) => {
+
+    res.json('ok')
+        const {email, password} = req.body;
+        const user = await User.findOne({email}); //Gjeje nje user nepermes Emailit
+        const isvalid = await user.isValidPassword({password});
+        res.json(isvalid);
+    } 
+);
+
+// Listen for requests
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
 
 // const UserSchema = new mongoose.Schema({
 //     name: String,
@@ -117,19 +148,3 @@ mongoose.connect(uri)
 //     res.json(savedUser);
 // })
 
-//Route per register
-app.post('/api/register', async(req, res) => {
-    try{
-        const {name, email, password} = req.body;
-        const user = new User({name, email, password});
-        await user.save();
-        res.status(201).send('User registered!');
-    } catch(error) {
-        res.status(500).json({error: 'Error on registration!'});
-    }
-})
-
-// Listen for requests
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
