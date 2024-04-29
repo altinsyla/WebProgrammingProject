@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   Button,
   Card,
@@ -13,39 +13,35 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import axios from "axios";
+import axios from 'axios';
 
 const Register = () => {
-  const [name, setName] = useState(''); //variabla per emrin
-  const [email, setEmail] = useState(''); //variabla per email
-  const [password, setPassword] = useState(''); //variabla per passowrd
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  }; //kto i vendosim te Inputi i Emailit pra value = email, onchange handleEmailChange
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+    
+  const handleNameChange = (event) => setName(event.target.value);
+  const handleEmailChange = (event) => setEmail(event.target.value);
+  const handlePasswordChange = (event) => setPassword(event.target.value);
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  }; //kto i vendosim te Inputi i Passwordit pra value = password, onchange handlePasswordChange
+    const handleSubmit = async(event) => {
+      event.preventDefault();
+      console.log('register button clicked');
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  }; //kto i vendosim te Inputi i Emrit pra value = emri, onchange handleNameChange
+      try {
+        const response = 
+        await axios.post('http://localhost:5001/api/register',
+        {name, email, password}
+        );
+        console.log(response);
+      } catch (error) {
+        console.error('Login error', error.response.data);
+      }
+      
+      
+    }
 
-
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    try{
-      const response =
-       await axios.post('http://localhost:5001/api/register',
-      {name, email, password} 
-      );
-    console.log(response.data)
-    } catch(error){
-      console.log("Login error", error?.response?.data)
-    } //na mundeson me klikimin e buttonit Submit mu kry qikjo funksion, e qiky funksion e merr name email password tvendosur i run DB
-   
-  };
   return (
     <>
       <Col lg="6" md="8">
@@ -103,12 +99,10 @@ const Register = () => {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Name" type="text" 
-
-                  autoComplete="new-name"
-                  value={name} // kjo vjen prej nalt
-                  onChange={handleNameChange} //emri i ri i vendosur
-                />
+                  <Input placeholder="Name" type="text"
+                  value={name}
+                  onChange={handleNameChange}
+                  />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -122,8 +116,8 @@ const Register = () => {
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
-                    value={email} //emaili 
-                    onChange={handleEmailChange} //emaili i ri i vendosur
+                    value={email}
+                    onChange={handleEmailChange}
                   />
                 </InputGroup>
               </FormGroup>
@@ -138,8 +132,8 @@ const Register = () => {
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
-                    value={password} //passwordi
-                    onChange={handlePasswordChange} //paswordi i ri i vendosur
+                    value={password}
+                    onChange={handlePasswordChange}
                   />
                 </InputGroup>
               </FormGroup>
@@ -172,9 +166,11 @@ const Register = () => {
                 </Col>
               </Row>
               <div className="text-center">
-                <Button className="mt-4" color="primary" onClick={handleSubmit} type="submit">
+                <Button className="mt-4" color="primary" 
+                onClick={handleSubmit}
+                   type="submit">
                   Create account
-                </Button>  
+                </Button>
               </div>
             </Form>
           </CardBody>

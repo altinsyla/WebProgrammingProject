@@ -1,6 +1,7 @@
+import React from 'react';
 import './App.css';
-import Login from './views/login';
-import Register from './views/register';
+import Login from './views/Login.js';
+import Register from './views/Register.js';
 
 
 function App() {

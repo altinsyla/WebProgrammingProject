@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState} from 'react';
+
 import {
     Button,
     Card,
@@ -13,28 +14,52 @@ import {
     Row,
     Col,
   } from "reactstrap";
-import axios from "axios";
+  import axios from 'axios';
   
-  
+
   const Login = () => {
-  const [email, setEmail] = useState(''); // ktu krijohet useState per email
-  const [password, setPassword] = useState(''); //ktu krijohet useState pe password
 
-  const handleEmailChange = (event) => setEmail(event.target.value); //Ndryshon emailin edhe e run ntextbox
-  const handlePasswordChange = (event) => setPassword(event.target.value); //Ndryshon password edhe e run ntextbox
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [token, setToken] = useState('');
 
-  const handleSubmit = async(event) => {
-    event.preventDefault();
-    try{
-      const response =
-       await axios.post('http://localhost:5001/api/login',
-      {email,password} 
-      );
-    console.log(response.data)
-    } catch(error){
-      console.log("Login error", error?.response?.data)
+    const handleEmailChange = (event) => setEmail(event.target.value);
+    const handlePasswordChange = (event) => setPassword(event.target.value);
+
+    const handleCheck = async(event) => {
+      event.preventDefault();
+      try {
+        const response = 
+        await axios.get('http://localhost:5001/check-token'
+        //me shtu headerin
+        ,{email, password}
+        );
+        console.log(response); //duhet me dal useri
+      } catch (error) {
+        console.error('Login error', error.response.data);
+      }
     }
-  };
+
+
+    const handleSubmit = async(event) => {
+      event.preventDefault();
+      console.log('test');
+      console.log(email, password);
+
+      // me thirr backendin me ja dergu emailin edhe paswrodin
+      try {
+        const response = 
+        await axios.post('http://localhost:5001/api/login',
+        {email, password}
+        );
+        setToken(response.data);
+      } catch (error) {
+        console.error('Login error', error.response.data);
+      }
+
+      
+    }
+
     return (
       <>
         <Col lg="5" md="7">
@@ -113,7 +138,7 @@ import axios from "axios";
                       type="password"
                       autoComplete="new-password"
                       value={password}
-                      onChange={handlePasswordChange} //paswordi i rujtun
+                      onChange={handlePasswordChange}
                     />
                   </InputGroup>
                 </FormGroup>
@@ -131,8 +156,18 @@ import axios from "axios";
                   </label>
                 </div>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="submit" onClick={handleSubmit}>
+                  <Button className="my-4" color="primary"
+                  onClick={handleSubmit}
+                   type="submit">
                     Sign in
+                  </Button>
+                </div>
+
+                <div className="text-center">
+                  <Button className="my-4" color="primary"
+                  onClick={handleCheck}
+                   type="submit">
+                    Check
                   </Button>
                 </div>
               </Form>
@@ -164,3 +199,4 @@ import axios from "axios";
   };
   
   export default Login;
+  
