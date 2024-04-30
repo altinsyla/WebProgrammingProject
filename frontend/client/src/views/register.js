@@ -36,7 +36,7 @@ const Register = () => {
         );
         console.log(response);
       } catch (error) {
-        console.error('Login error', error.response.data);
+        console.error('Login error', error.response.data);  
       }
       
       

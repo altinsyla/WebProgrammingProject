@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Login from './views/Login.js';
 import Register from './views/Register.js';
+import Form from './views/Form.js';
 
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
     <div className="App">
       <Login />
       <Register />
+      < Form />
     </div>
   );
 }
