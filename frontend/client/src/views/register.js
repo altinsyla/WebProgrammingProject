@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -13,34 +13,32 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import axios from 'axios';
+import axios from "axios";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-    
   const handleNameChange = (event) => setName(event.target.value);
   const handleEmailChange = (event) => setEmail(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
 
-    const handleSubmit = async(event) => {
-      event.preventDefault();
-      console.log('register button clicked');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("register button clicked");
 
-      try {
-        const response = 
-        await axios.post('http://localhost:5001/api/register',
-        {name, email, password}
-        );
-        console.log(response);
-      } catch (error) {
-        console.error('Login error', error.response.data);  
-      }
-      
-      
+    try {
+      const response = await axios.post("http://localhost:5001/api/register", {
+        name,
+        email,
+        password,
+      });
+      console.log(response);
+    } catch (error) {
+      console.error("Register error", error.response.data);
     }
+  };
 
   return (
     <>
@@ -61,8 +59,7 @@ const Register = () => {
                   <img
                     alt="..."
                     src={
-                      require("../assets/img/icons/common/github.svg")
-                        .default
+                      require("../assets/img/icons/common/github.svg").default
                     }
                   />
                 </span>
@@ -78,8 +75,7 @@ const Register = () => {
                   <img
                     alt="..."
                     src={
-                      require("../assets/img/icons/common/google.svg")
-                        .default
+                      require("../assets/img/icons/common/google.svg").default
                     }
                   />
                 </span>
@@ -99,9 +95,11 @@ const Register = () => {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Name" type="text"
-                  value={name}
-                  onChange={handleNameChange}
+                  <Input
+                    placeholder="Name"
+                    type="text"
+                    value={name}
+                    onChange={handleNameChange}
                   />
                 </InputGroup>
               </FormGroup>
@@ -166,9 +164,12 @@ const Register = () => {
                 </Col>
               </Row>
               <div className="text-center">
-                <Button className="mt-4" color="primary" 
-                onClick={handleSubmit}
-                   type="submit">
+                <Button
+                  className="mt-4"
+                  color="primary"
+                  onClick={handleSubmit}
+                  type="submit"
+                >
                   Create account
                 </Button>
               </div>

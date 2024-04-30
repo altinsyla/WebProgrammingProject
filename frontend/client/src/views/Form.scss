@@ -1,0 +1,25 @@
+
+.form{
+    display: flex;
+    flex-direction: column;
+    // margin-left: 50%;
+
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+
+    background-color: wheat;
+    width: fit-content;
+
+    padding: 2rem 5rem;
+
+    border-radius: 20px;
+}
+
+.submit_button{
+    width: 40%;
+    height: 60%;
+    background-color: #666666;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 100px;
+}
