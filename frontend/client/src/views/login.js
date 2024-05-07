@@ -1,21 +1,21 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
+import axios from 'axios';
 import {
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    FormGroup,
-    Form,
-    Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
-    Row,
-    Col,
-  } from "reactstrap";
-  import axios from 'axios';
-  import api from '../../src/api.js'
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row,
+} from "reactstrap";
+import api from '../api.js';
   
 
   const Login = () => {
@@ -46,7 +46,7 @@ import {
 
     const handleSubmit = async(event) => {
       event.preventDefault();
-      console.log('test');
+      console.log('Logged In Succesfuly');
       console.log(email, password);
 
       // me thirr backendin me ja dergu emailin edhe paswrodin

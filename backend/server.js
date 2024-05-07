@@ -1,22 +1,18 @@
-/*
-npm init -y
-npm install express mongoose cors
-npm install --save-dev nodemon
-*/
-
 const express = require("express");
 require("dotenv").config();
-
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5001;
 const jwt = require("jsonwebtoken");
 const User = require("./Models/User");
-const bcrypt = require("bcryptjs");
 const verifyToken = require("./verifyToken.js");
+const authRoutes = require('./routes/authRoutes.js'); 
+const expenseRoutes = require('./routes/expenseRoutes.js'); 
 
 app.use(cors());
 app.use(express.json());
+app.use('/api', authRoutes);
+app.use('/api/expenses', expenseRoutes);
 
 const mongoose = require("mongoose");
 const uri =
@@ -25,35 +21,6 @@ mongoose
   .connect(uri)
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.log("Couldn't connect to MongoDB", error));
-
-app.post("/api/register", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    const user = new User({ name, email, password });
-    await user.save();
-    res.status(201).send("User registered");
-  } catch (error) {
-    res.status(500).json({ error: "Error on registation" });
-  }
-});
-
-app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (user) {
-    const isvalid = await user.isValidPassword(password);
-    if (isvalid) {
-      // username edhe pw correct
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'qelsi', {
-        expiresIn: "1h",
-      });
-
-      res.json(token); //kthehet tokeni si response
-    }
-  } else {
-    res.status(404).json({ mesazhi: "Incorrect username or password" });
-  }
-});
 
 app.get("/api/check-token", verifyToken /* Middleware*/, (req, res) => {
   res.json(req.user);
