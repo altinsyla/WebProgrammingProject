@@ -1,0 +1,31 @@
+.maindiv{
+    display: flex;
+    justify-content: center;
+}
+
+table{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.checkedRows{
+    padding: 0.5rem 1rem;
+}
+.mainheader th{
+    border-bottom: 1px solid gray;
+}
+
+th{
+    width: 100%;
+}
+
+tr{
+    text-align: center;
+    display: flex;
+}
+
+td{
+    /* border-bottom: 1px solid red; */
+    width: 100%;
+}

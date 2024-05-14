@@ -14,6 +14,7 @@ import {
   Col,
 } from "reactstrap";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -172,6 +173,11 @@ const Register = () => {
                 >
                   Create account
                 </Button>
+              </div>
+              <div className="text-center">
+                <Link to="/Login" className="btn btn-primary mr-2">
+                  Already have an account? Log in.
+                </Link>
               </div>
             </Form>
           </CardBody>

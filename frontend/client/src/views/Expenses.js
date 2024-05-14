@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import api from "../../src/api.js";
+import { Link } from "react-router-dom";
 
 function Expenses() {
 
@@ -41,10 +42,12 @@ function Expenses() {
         <div
       style={{
           display: "flex",
+          flexDirection: "column",
         justifyContent: "center",
         alignContent: "center",
       }}
     >
+
       <form onSubmit={onSubmit}
         style={{
             display: "flex",
@@ -69,6 +72,9 @@ function Expenses() {
 
 
         <button type= 'submit' style={{width: "fit-content", alignSelf: 'center', marginTop: '2rem', borderRadius: '10px', backgroundColor: 'gray', color: 'white', fontSize: '20px'}}>Add Expense</button>
+        <Link to="/Dashboard" className="btn btn-danger mr-2">
+              Go to Dashboard
+            </Link>
       </form>
     </div>
   );

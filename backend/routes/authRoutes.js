@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
       if (isvalid) {
         // username edhe pw correct
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'qelsi', {
-          expiresIn: "1h",
+          expiresIn: "1d",
         });
   
         res.json(token); //kthehet tokeni si response
