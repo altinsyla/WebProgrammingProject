@@ -55,15 +55,13 @@ router.put('/:expenseId', verifyToken, async(req, res) => {
             amount,
             description,
             date
-        });
+        }, {new: true});
         res.json(updatedExpense);
     }
     catch(error) {
-
-
+        res.status(500).json({message: error.message});
     }
-    
-});
+    });
 
 router.delete('/:expenseId', verifyToken, async(req, res) => {
     console.log('delete expense');

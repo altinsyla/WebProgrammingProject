@@ -41,14 +41,18 @@ function Expenses() {
     e.preventDefault();
     try {
       if (id) {
-        api.put("/expenses/" + id).then((response) => {
+        api.put("/expenses/" + id, formData).then((response) => {
           alert("Expense edited!");
           history.push("/dashboard");
         });
+        
+      }
+      else { 
         api
           .post("/expenses", formData)
           .then((response) => {
             console.log(response);
+            history.push("/dashboard");
           })
           .catch((err) => {
             console.log("cannot save expenses!");
