@@ -9,10 +9,11 @@ function Expenses() {
     amount: "",
     description: "",
     date: "",
+    paid: false,
   });
   const history = useHistory();
   const { id } = useParams();
-
+  const [isChecked, setIsChecked] = useState('false');
   useEffect(() => {
     console.log(id);
     if (id) {
@@ -23,6 +24,7 @@ function Expenses() {
             amount: response.data.amount,
             description: response.data.description,
             date: response.data.date.split("T")[0],
+            paid: response.data.paid
           });
           console.log(formData);
         });
@@ -45,7 +47,6 @@ function Expenses() {
           alert("Expense edited!");
           history.push("/dashboard");
         });
-        
       }
       else { 
         api
@@ -128,7 +129,14 @@ function Expenses() {
           style={{ borderRadius: "5px", padding: "2px 1px" }}
           value={formData.date}
         />
-
+        <label>Paid</label>
+        <input
+          onChange={onChange}
+          type="checkbox"
+          name="paid"
+          style={{ borderRadius: "5px", padding: "2px 1px" }}
+          checked={formData.paid}          
+        />
         <button
           type="submit"
           style={{
@@ -141,7 +149,7 @@ function Expenses() {
             fontSize: "20px",
           }}
         >
-          Add Expense
+          {id ? 'Edit expense': 'Add Expense'}
         </button>
         <Link to="/Dashboard" className="btn btn-danger mr-2">
           Go to Dashboard

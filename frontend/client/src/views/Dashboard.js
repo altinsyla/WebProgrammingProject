@@ -67,6 +67,7 @@ function Dashboard() {
             <th>Amount</th>
             <th>Description</th>
             <th>Date</th>
+            <th>Paid</th>
             <th>Buttons</th>
           </tr>
         </thead>
@@ -77,6 +78,12 @@ function Dashboard() {
               <td>{expense.amount}</td>
               <td>{expense.description}</td>
               <td>{new Date(expense.date).toLocaleDateString()}</td>
+              <td><input
+                  type="checkbox"
+                  checked={expense.paid}
+                  readOnly
+                />
+              </td>
               <td>
                 <button
                   className="btn btn-primary mr-2"

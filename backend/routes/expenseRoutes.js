@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.post('/', verifyToken, async(req,res) => {
     console.log('post expense!')
-    const { category, amount, description, date } = req.body;
+    const { category, amount, description, date, paid } = req.body;
     try {
-        const newExpense = new Expense({ user: req.user.id, category, amount, description, date });
+        const newExpense = new Expense({ user: req.user.id, category, amount, description, date, paid: Boolean(paid) });
         await newExpense.save();
         res.status(201).json(newExpense);
       } catch (error) {
@@ -47,14 +47,15 @@ router.put('/:expenseId', verifyToken, async(req, res) => {
     console.log('update expense');
     const {expenseId} = req.params; //alternativa osht req.params.expenseId
     console.log(expenseId);
-    const { category, amount, description, date } = req.body;
+    const { category, amount, description, date, paid } = req.body;
 
     try{
         const updatedExpense = await Expense.findByIdAndUpdate(expenseId, {
             category,
             amount,
             description,
-            date
+            date,
+            paid: Boolean(paid)
         }, {new: true});
         res.json(updatedExpense);
     }
