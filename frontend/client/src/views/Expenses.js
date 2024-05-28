@@ -13,7 +13,7 @@ function Expenses() {
   });
   const history = useHistory();
   const { id } = useParams();
-  const [isChecked, setIsChecked] = useState('false');
+  const [isChecked, setIsChecked] = useState("false");
   useEffect(() => {
     console.log(id);
     if (id) {
@@ -24,7 +24,7 @@ function Expenses() {
             amount: response.data.amount,
             description: response.data.description,
             date: response.data.date.split("T")[0],
-            paid: response.data.paid
+            paid: response.data.paid,
           });
           console.log(formData);
         });
@@ -34,9 +34,8 @@ function Expenses() {
   }, []);
 
   const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log("Form Data");
-    console.log(formData);
+    const { name, value, type, checked } = e.target;
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
   };
 
   const onSubmit = async (e) => {
@@ -47,8 +46,7 @@ function Expenses() {
           alert("Expense edited!");
           history.push("/dashboard");
         });
-      }
-      else { 
+      } else {
         api
           .post("/expenses", formData)
           .then((response) => {
@@ -70,91 +68,98 @@ function Expenses() {
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
         justifyContent: "center",
         alignContent: "center",
+        height: "100vh",
       }}
     >
-      <form
-        onSubmit={onSubmit}
+      <div
         style={{
           display: "flex",
           flexDirection: "column",
-          width: "fit-content",
-          backgroundColor: "#f2f2f2",
-          padding: "2rem 5rem",
-          borderRadius: "20px",
+          justifyContent: "center",
+          alignContent: "center",
         }}
       >
-        <label>Set Category</label>
-        <input
-          onChange={onChange}
-          type="text"
-          placeholder="Category"
-          name="category"
-          required
-          style={{ borderRadius: "5px", padding: "2px 1px" }}
-          aria-placeholder="bold"
-          value={formData.category}
-        />
-
-        <label>Set Amount</label>
-        <input
-          onChange={onChange}
-          type="number"
-          placeholder="Amount"
-          name="amount"
-          required
-          style={{ borderRadius: "5px", padding: "2px 1px" }}
-          value={formData.amount}
-        />
-
-        <label>Set Description</label>
-        <input
-          onChange={onChange}
-          type="text"
-          placeholder="Description"
-          name="description"
-          style={{ borderRadius: "5px", padding: "2px 1px" }}
-          value={formData.description}
-        />
-
-        <label>Set Date</label>
-        <input
-          onChange={onChange}
-          type="date"
-          placeholder="Date"
-          name="date"
-          required
-          style={{ borderRadius: "5px", padding: "2px 1px" }}
-          value={formData.date}
-        />
-        <label>Paid</label>
-        <input
-          onChange={onChange}
-          type="checkbox"
-          name="paid"
-          style={{ borderRadius: "5px", padding: "2px 1px" }}
-          checked={formData.paid}          
-        />
-        <button
-          type="submit"
+        <form
+          onSubmit={onSubmit}
           style={{
+            display: "flex",
+            flexDirection: "column",
             width: "fit-content",
-            alignSelf: "center",
-            marginTop: "2rem",
-            borderRadius: "10px",
-            backgroundColor: "gray",
-            color: "white",
-            fontSize: "20px",
+            backgroundColor: "#f2f2f2",
+            padding: "2rem 5rem",
+            borderRadius: "20px",
           }}
         >
-          {id ? 'Edit expense': 'Add Expense'}
-        </button>
-        <Link to="/Dashboard" className="btn btn-danger mr-2">
-          Go to Dashboard
-        </Link>
-      </form>
+          <label>Set Category</label>
+          <input
+            onChange={onChange}
+            type="text"
+            placeholder="Category"
+            name="category"
+            required
+            style={{ borderRadius: "5px", padding: "2px 1px" }}
+            aria-placeholder="bold"
+            value={formData.category}
+          />
+
+          <label>Set Amount</label>
+          <input
+            onChange={onChange}
+            type="number"
+            placeholder="Amount"
+            name="amount"
+            required
+            style={{ borderRadius: "5px", padding: "2px 1px" }}
+            value={formData.amount}
+          />
+
+          <label>Set Description</label>
+          <input
+            onChange={onChange}
+            type="text"
+            placeholder="Description"
+            name="description"
+            style={{ borderRadius: "5px", padding: "2px 1px" }}
+            value={formData.description}
+          />
+
+          <label>Set Date</label>
+          <input
+            onChange={onChange}
+            type="date"
+            placeholder="Date"
+            name="date"
+            required
+            style={{ borderRadius: "5px", padding: "2px 1px" }}
+            value={formData.date}
+          />
+          <label>Paid</label>
+          <input
+            onChange={onChange}
+            type="checkbox"
+            name="paid"
+            style={{ borderRadius: "5px", padding: "2px 1px" }}
+            checked={formData.paid}
+          />
+          <button
+            type="submit"
+            className="btn btn-success"
+            style={{
+              width: "fit-content",
+              alignSelf: "center",
+              marginTop: "2rem",
+              marginBottom: "2rem",
+            }}
+          >
+            {id ? "Edit expense" : "Add Expense"}
+          </button>
+          <Link to="/Dashboard" className="btn btn-danger">
+            Go to Dashboard
+          </Link>
+        </form>
+      </div>
     </div>
   );
 }

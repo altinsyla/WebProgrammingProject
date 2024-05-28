@@ -8,7 +8,16 @@ function Dashboard() {
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const [deleteExpenseId, setDeleteExpenseId] = useState("");
-  const [updateExpense, setUpdateExpense] = useState('');
+
+  const [showFilterModal, setshowFilterModal] = useState(false);
+  const [filter, setFilter] = useState({
+    name: "",
+    amount: "",
+    amountCondition: "equal",
+    paid: "",
+    date: "",
+    dateCondition: "equal",
+  });
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
@@ -40,8 +49,8 @@ function Dashboard() {
   };
 
   const handleEdit = (expenseId) => {
-    history.push('/expenses/edit/' + expenseId);
-  }
+    history.push("/expenses/edit/" + expenseId);
+  };
 
   const confirmDelete = (expenseId) => {
     setShowModal(true);
@@ -52,6 +61,17 @@ function Dashboard() {
     setShowModal(false);
   };
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilter({ ...filter, [name]: value });
+  };
+
+  const applyFilter = async () => {
+    const response = await api.get("/expenses", { params: filter });
+    setExpenses(response.data);
+    setshowFilterModal(false);
+  };
+
   return (
     <div className="mt-5">
       <Link to="/Expenses" className="btn btn-primary mr-2">
@@ -59,6 +79,12 @@ function Dashboard() {
       </Link>
       <button onClick={handleLogOut} className="btn btn-primary mr-2">
         Log Out
+      </button>
+      <button
+        onClick={() => setshowFilterModal(true)}
+        className="btn btn-primary mr-2"
+      >
+        Filter
       </button>
       <table>
         <thead>
@@ -78,10 +104,12 @@ function Dashboard() {
               <td>{expense.amount}</td>
               <td>{expense.description}</td>
               <td>{new Date(expense.date).toLocaleDateString()}</td>
-              <td><input
+              <td>
+                <input
                   type="checkbox"
                   checked={expense.paid}
                   readOnly
+                  // disabled="disabled"  e hijezon edhe slen me prek
                 />
               </td>
               <td>
@@ -114,6 +142,74 @@ function Dashboard() {
           <button onClick={cancelDelete} className="buttonsNo">
             No
           </button>
+        </div>
+      )}
+      {showFilterModal && (
+        <div className="filter-overlay">
+          <div className="filter-dialog">
+            <h2>Filter Expenses</h2>
+            <div className="filter-group">
+              <label>Category:</label>
+              <input
+                type="text"
+                name="name"
+                value={filter.name}
+                onChange={handleFilterChange}
+              />
+            </div>
+            <div className="filter-group">
+              <label>Amount:</label>
+              <input
+                type="number"
+                name="amount"
+                value={filter.amount}
+                onChange={handleFilterChange}
+              />
+              <select
+                name="amountCondition"
+                value={filter.amountCondition}
+                onChange={handleFilterChange}
+              >
+                <option value="equal">Equal</option>
+                <option value="bigger">Bigger</option>
+                <option value="smaller">Smaller</option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label>Paid:</label>
+              <select
+                name="paid"
+                value={filter.paid}
+                onChange={handleFilterChange}
+              >
+                <option value="">Any</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label>Date:</label>
+              <input
+                type="date"
+                name="date"
+                value={filter.date}
+                onChange={handleFilterChange}
+              />
+              <select
+                name="dateCondition"
+                value={filter.dateCondition}
+                onChange={handleFilterChange}
+              >
+                <option value="equal">Equal</option>
+                <option value="bigger">Bigger</option>
+                <option value="smaller">Smaller</option>
+              </select>
+            </div>
+            <div className="filter-buttons">
+              <button onClick={applyFilter}>Apply Filter</button>
+              <button onClick={() => setshowFilterModal(false)}>Cancel</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
