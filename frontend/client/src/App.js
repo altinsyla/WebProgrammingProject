@@ -1,9 +1,10 @@
 import React from "react";
 import "./App.css";
-import Login from "./views/login";
-import Register from "./views/register";
+import Login from "./views/Login";
+import Register from "./views/Register";
 import Expenses from "./views/Expenses.js";
 import Dashboard from "./views/Dashboard.js";
+import Income from './views/Income.js';
 import { BrowserRouter, Route, Switch } from "react-router-dom"; // per linqe
 
 function App() {
@@ -17,7 +18,6 @@ function App() {
         <Route exact path="/Register">
           <Register />
         </Route>
-
         <Route exact path="/Expenses">
           <Expenses />
         </Route>
@@ -32,7 +32,7 @@ function App() {
           <Expenses />
         </Route>
         <Route exact path="/income">
-          <Expenses />
+          <Income />
         </Route>
       </Switch>
     </BrowserRouter>

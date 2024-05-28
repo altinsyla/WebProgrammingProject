@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../api";
 import "./Dashboard.css";
 import { Link, useHistory } from "react-router-dom";
+import Sidebar from './Sidebar';
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
@@ -74,6 +75,8 @@ function Dashboard() {
 
   return (
     <div className="mt-5">
+      <Sidebar />
+      <div className="main-div">
       <Link to="/Expenses" className="btn btn-primary mr-2">
         Add Expense
       </Link>
@@ -86,6 +89,8 @@ function Dashboard() {
       >
         Filter
       </button>
+      </div>
+
       <table>
         <thead>
           <tr className="mainheader">
