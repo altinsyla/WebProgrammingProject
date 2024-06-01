@@ -17,6 +17,7 @@ import {
 } from "reactstrap";
 import api from "../api.js";
 import { Link, useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
   useEffect(() => {
@@ -52,13 +53,17 @@ const Login = () => {
       localStorage.setItem("token", response.data);
       setToken(response.data);
       history.push("/Dashboard");
+      Swal.fire({
+        text: "You have been logged in successfully!",
+        icon: "success",
+      });
     } catch (error) {
       console.error("Login error", error.response.data);
     }
   };
 
   return (
-    <>
+    <div class="d-flex justify-content-center align-items-center mt-7">
       <Col lg="5" md="7">
         <Card className="bg-secondary shadow border-0">
           <CardHeader className="bg-transparent pb-5">
@@ -102,7 +107,7 @@ const Login = () => {
           </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
-              <small>Or sign in with credentials</small>
+              <h2>Sign in with credentials</h2>
             </div>
             <Form role="form">
               <FormGroup className="mb-3">
@@ -150,13 +155,11 @@ const Login = () => {
                   <span className="text-muted">Remember me</span>
                 </label>
               </div>
-              <div className="text-center">
-                <button onClick={handleSubmit} className="btn btn-primary mr-2">
+              <div className="login-buttons">
+                <button onClick={handleSubmit} className="btn btn-primary mr-2" style={{ width: '180px' }}>
                   Sign In
                 </button>
-              </div>
-              <div className="text-center">
-                <Link to="/Register" className="btn btn-danger mr-2">
+                <Link to="/Register" className="btn btn-danger mr-2" style={{ width: '180px' }}>
                   Create an Account
                 </Link>
               </div>
@@ -170,13 +173,12 @@ const Login = () => {
               href="#pablo"
               onClick={(e) => e.preventDefault()}
             >
-              <small>Forgot password?</small>
             </a>
           </Col>
           <Col className="text-right" xs="6"></Col>
         </Row>
       </Col>
-    </>
+    </div>
   );
 };
 

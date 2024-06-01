@@ -2,6 +2,11 @@
   display: flex;
   justify-content: center;
 }
+.main-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
 
 table {
   display: flex;
@@ -17,11 +22,14 @@ table {
 
 th {
   width: 100%;
+  color: white;
+  background-color: gray;
 }
 
 tr {
   text-align: center;
   display: flex;
+  background-color: gainsboro;
 }
 
 td {

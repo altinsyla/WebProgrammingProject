@@ -42,7 +42,7 @@ const Register = () => {
   };
 
   return (
-    <>
+    <div class="d-flex justify-content-center align-items-center mt-4">
       <Col lg="6" md="8">
         <Card className="bg-secondary shadow border-0">
           <CardHeader className="bg-transparent pb-5">
@@ -164,18 +164,11 @@ const Register = () => {
                   </div>
                 </Col>
               </Row>
-              <div className="text-center">
-                <Button
-                  className="mt-4"
-                  color="primary"
-                  onClick={handleSubmit}
-                  type="submit"
-                >
+              <div className="register-buttons">
+              <button onClick={handleSubmit} className="btn btn-primary mr-2" style={{ width: '300px' }}>
                   Create account
-                </Button>
-              </div>
-              <div className="text-center">
-                <Link to="/Login" className="btn btn-primary mr-2">
+                </button>
+                <Link to="/Login" className="btn btn-danger mr-2" style={{ width: '300px' }}>
                   Already have an account? Log in.
                 </Link>
               </div>
@@ -183,7 +176,7 @@ const Register = () => {
           </CardBody>
         </Card>
       </Col>
-    </>
+    </div>
   );
 };
 

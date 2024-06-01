@@ -8,11 +8,13 @@ const User = require("./Models/User");
 const verifyToken = require("./verifyToken.js");
 const authRoutes = require('./routes/authRoutes.js'); 
 const expenseRoutes = require('./routes/expenseRoutes.js'); 
+const incomeRoutes = require('./routes/incomeRoutes.js');
 
 app.use(cors());
 app.use(express.json());
 app.use('/api', authRoutes);
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/incomes', incomeRoutes);
 
 const mongoose = require("mongoose");
 const uri =

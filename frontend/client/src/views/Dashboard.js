@@ -3,6 +3,7 @@ import api from "../api";
 import "./Dashboard.css";
 import { Link, useHistory } from "react-router-dom";
 import Sidebar from './Sidebar';
+import Swal from "sweetalert2";
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
@@ -23,6 +24,10 @@ function Dashboard() {
   const handleLogOut = () => {
     localStorage.removeItem("token");
     history.push("/Login");
+    Swal.fire({
+      text: "You have been logged out successfully!",
+      icon: "success",
+    });
   };
 
   const getExpenses = async () => {
@@ -74,25 +79,26 @@ function Dashboard() {
   };
 
   return (
-    <div className="mt-5">
+    <div style={{ backgroundColor: '#F1EDED', height: "100vh" }}>
       <Sidebar />
       <div className="main-div">
-      <Link to="/Expenses" className="btn btn-primary mr-2">
+      <Link to="/Expenses" className="btn btn-primary mt-3 mr-2">
         Add Expense
       </Link>
-      <button onClick={handleLogOut} className="btn btn-primary mr-2">
+      <button onClick={handleLogOut} className="btn btn-danger mt-3 mr-2">
         Log Out
       </button>
       <button
         onClick={() => setshowFilterModal(true)}
-        className="btn btn-primary mr-2"
+        className="btn btn-primary mt-3 mr-5"
       >
         Filter
       </button>
       </div>
 
-      <table>
+      <table  style={{width: '80%', display:'flex', flexDirection: "column", marginLeft: "270px"}}>
         <thead>
+          <h2>Expense Dashboard</h2>
           <tr className="mainheader">
             <th>Category</th>
             <th>Amount</th>
