@@ -82,7 +82,7 @@ function IncomeDashboard() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilter({ ...filter, [name]: value });
+    setFilter({ ...filter, [name]: name === "amount" ? parseFloat(value) : value });
   };
 
   const applyFilter = async () => {
@@ -100,7 +100,7 @@ function IncomeDashboard() {
         </Link>
         <button
           onClick={() => setshowFilterModal(true)}
-          className="btn btn-primary mt-3 mr-3 mb-3"
+          className="btn btn-success mt-3 mr-3 mb-3"
         >
           Filter
         </button>
@@ -133,14 +133,14 @@ function IncomeDashboard() {
               <td>
                 <button
                   className="btn btn-primary mr-2"
-                  style={{ fontSize: "10px" }}
+                  style={{ fontSize: "10px",  marginTop: '5px', marginBottom: '5px' }}
                   onClick={() => handleEdit(income._id)}
                 >
                   Edit
                 </button>
                 <button
                   className="btn btn-danger  mr-2"
-                  style={{ fontSize: "10px"}}
+                  style={{ fontSize: "10px", marginTop: '5px', marginBottom: '5px'}}
                   onClick={() => confirmDelete(income._id)}
                 >
                   Delete
@@ -159,8 +159,8 @@ function IncomeDashboard() {
               <label>Category:</label>
               <input
                 type="text"
-                name="amount"
-                value={filter.amount}
+                name="category"
+                value={filter.category}
                 onChange={handleFilterChange}
               />
             </div>
@@ -168,10 +168,19 @@ function IncomeDashboard() {
               <label>Amount:</label>
               <input
                 type="number"
-                name="category"
-                value={filter.category}
+                name="amount"
+                value={filter.amount}
                 onChange={handleFilterChange}
               />
+              <select
+                name="amountCondition"
+                value={filter.amountCondition}
+                onChange={handleFilterChange}
+              >
+                <option value="equal">Equal</option>
+                <option value="bigger">Bigger</option>
+                <option value="smaller">Smaller</option>
+              </select>
             </div>
             <div className="filter-group">
               <label>Date:</label>
@@ -181,6 +190,15 @@ function IncomeDashboard() {
                 value={filter.registeredDate}
                 onChange={handleFilterChange}
               />
+              <select
+                name="dateCondition"
+                value={filter.dateCondition}
+                onChange={handleFilterChange}
+              >
+                <option value="equal">Equal</option>
+                <option value="bigger">Bigger</option>
+                <option value="smaller">Smaller</option>
+              </select>
             </div>
             <div className="filter-buttons">
               <button onClick={applyFilter}>Apply Filter</button>

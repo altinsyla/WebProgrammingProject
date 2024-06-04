@@ -7,10 +7,10 @@ function Sidebar() {
         <div className='sidebar'>
             <ul>
                 <li>
-                    <Link to='/dashboard'>Dashboard</Link>
+                    <Link to='/dashboard'>Expenses</Link>
                 </li>
                 <li>
-                    <Link to='/incomedashboard'>Income</Link>
+                    <Link to='/incomedashboard'>Incomes</Link>
                 </li>
             </ul>
         </div>

@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useSyncExternalStore } from "react";
 import api from "../api";
 import "./Dashboard.css";
 import { Link, useHistory } from "react-router-dom";
-import Sidebar from './Sidebar';
+import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
   const history = useHistory();
-  const [showModal, setShowModal] = useState(false);
-  const [deleteExpenseId, setDeleteExpenseId] = useState("");
-
   const [showFilterModal, setshowFilterModal] = useState(false);
   const [filter, setFilter] = useState({
     name: "",
@@ -20,6 +17,11 @@ function Dashboard() {
     date: "",
     dateCondition: "equal",
   });
+  const [total, setTotal] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
@@ -32,8 +34,11 @@ function Dashboard() {
 
   const getExpenses = async () => {
     try {
-      const response = await api.get("/expenses");
-      setExpenses(response.data);
+      const response = await api.get("/expenses", {
+        params: { ...filter, page, limit, sortField, sortOrder },
+      });
+      setExpenses(response.data.expense);
+      setTotal(response.data.total);
     } catch (err) {
       console.log("You need to be logged in first!");
     }
@@ -45,26 +50,43 @@ function Dashboard() {
       return;
     }
     getExpenses();
-  }, [history]);
+  }, [page, limit, sortField, sortOrder]);
 
-  const deleteExpense = async () => {
-    await api.delete("/expenses/" + deleteExpenseId);
-    setShowModal(false);
-    getExpenses();
-    alert("Expense deleted!");
+  const deleteExpense = async (expenseId) => {
+    try {
+      await api.delete("/expenses/" + expenseId);
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your expense has been deleted.",
+        icon: "success",
+      });
+      getExpenses();
+    } catch (err) {
+      console.error("Failed to delete expense", err);
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to delete expense!",
+        icon: "error",
+      });
+    }
   };
-
   const handleEdit = (expenseId) => {
     history.push("/expenses/edit/" + expenseId);
   };
 
   const confirmDelete = (expenseId) => {
-    setShowModal(true);
-    setDeleteExpenseId(expenseId);
-  };
-
-  const cancelDelete = () => {
-    setShowModal(false);
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteExpense(expenseId);
+      }
+    });
   };
 
   const handleFilterChange = (e) => {
@@ -73,34 +95,60 @@ function Dashboard() {
   };
 
   const applyFilter = async () => {
+    setPage(1);
     const response = await api.get("/expenses", { params: filter });
     setExpenses(response.data);
     setshowFilterModal(false);
   };
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    getExpenses();
+  };
+
+  const handleSortChange = (field) => {
+    const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(order);
+  };
+
   return (
-    <div style={{ backgroundColor: '#F1EDED', height: "100vh" }}>
+    <div style={{ backgroundColor: "#F1EDED", height: "100%" }}>
       <Sidebar />
       <div className="main-div">
-      <Link to="/Expenses" className="btn btn-primary mt-3 mr-2">
-        Add Expense
-      </Link>
-      <button onClick={handleLogOut} className="btn btn-danger mt-3 mr-2">
-        Log Out
-      </button>
-      <button
-        onClick={() => setshowFilterModal(true)}
-        className="btn btn-primary mt-3 mr-5"
-      >
-        Filter
-      </button>
+        <Link to="/Expenses" className="btn btn-primary mt-3 mr-2">
+          Add Expense
+        </Link>
+        <button
+          onClick={() => setshowFilterModal(true)}
+          className="btn btn-success mt-3 mr-2"
+        >
+          Filter
+        </button>
+        <button onClick={handleLogOut} className="btn btn-danger mt-3 mr-5">
+          Log Out
+        </button>
       </div>
 
-      <table  style={{width: '80%', display:'flex', flexDirection: "column", marginLeft: "270px"}}>
+      <table
+        style={{
+          width: "80%",
+          display: "flex",
+          flexDirection: "column",
+          marginLeft: "270px",
+        }}
+      >
         <thead>
           <h2>Expense Dashboard</h2>
           <tr className="mainheader">
-            <th>Category</th>
+            <th onClick={() => handleSortChange("category")}>
+              Category{" "}
+              {sortField === "category"
+                ? sortOrder === "asc"
+                  ? "⬆🙂"
+                  : "🙁"
+                : ""}
+            </th>
             <th>Amount</th>
             <th>Description</th>
             <th>Date</th>
@@ -126,14 +174,22 @@ function Dashboard() {
               <td>
                 <button
                   className="btn btn-primary mr-2"
-                  style={{ fontSize: "10px" }}
+                  style={{
+                    fontSize: "10px",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
                   onClick={() => handleEdit(expense._id)}
                 >
                   Edit
                 </button>
                 <button
                   className="btn btn-danger mr-2"
-                  style={{ fontSize: "10px" }}
+                  style={{
+                    fontSize: "10px",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
                   onClick={() => confirmDelete(expense._id)}
                 >
                   Delete
@@ -143,18 +199,18 @@ function Dashboard() {
           ))}
         </tbody>
       </table>
+      <div className="pagination">
+        {Array.from({ length: Math.ceil(total / limit) }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => handlePageChange(i + 1)}
+            className={page === i + 1 ? "active" : ""}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
 
-      {showModal && (
-        <div className="confirmDialog">
-          <p>Are you sure you want to delete this expense?</p>
-          <button onClick={deleteExpense} className="buttonsYes">
-            Yes
-          </button>
-          <button onClick={cancelDelete} className="buttonsNo">
-            No
-          </button>
-        </div>
-      )}
       {showFilterModal && (
         <div className="filter-overlay">
           <div className="filter-dialog">
@@ -187,16 +243,13 @@ function Dashboard() {
               </select>
             </div>
             <div className="filter-group">
-              <label>Paid:</label>
-              <select
-                name="paid"
-                value={filter.paid}
+              <label>Description:</label>
+              <input
+                type="text"
+                name="description"
+                value={filter.description}
                 onChange={handleFilterChange}
-              >
-                <option value="">Any</option>
-                <option value="true">True</option>
-                <option value="false">False</option>
-              </select>
+              />
             </div>
             <div className="filter-group">
               <label>Date:</label>
@@ -214,6 +267,18 @@ function Dashboard() {
                 <option value="equal">Equal</option>
                 <option value="bigger">Bigger</option>
                 <option value="smaller">Smaller</option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label>Paid:</label>
+              <select
+                name="paid"
+                value={filter.paid}
+                onChange={handleFilterChange}
+              >
+                <option value="">Any</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
               </select>
             </div>
             <div className="filter-buttons">

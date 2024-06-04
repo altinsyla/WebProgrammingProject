@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../src/api.js";
 import { Link, useHistory, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Expenses() {
   const [formData, setFormData] = useState({
@@ -43,7 +44,10 @@ function Expenses() {
     try {
       if (id) {
         api.put("/expenses/" + id, formData).then((response) => {
-          alert("Expense edited!");
+          Swal.fire({
+            text: "Expense successfully edited!",
+            icon: "success",
+          });
           history.push("/dashboard");
         });
       } else {
@@ -51,6 +55,10 @@ function Expenses() {
           .post("/expenses", formData)
           .then((response) => {
             console.log(response);
+            Swal.fire({
+              text: "Expense successfully added!",
+              icon: "success",
+            });
             history.push("/dashboard");
           })
           .catch((err) => {
@@ -143,6 +151,7 @@ function Expenses() {
             style={{ borderRadius: "5px", padding: "2px 1px" }}
             checked={formData.paid}
           />
+          <div>
           <button
             type="submit"
             className="btn btn-success"
@@ -158,6 +167,7 @@ function Expenses() {
           <Link to="/Dashboard" className="btn btn-danger">
             Go to Dashboard
           </Link>
+          </div>
         </form>
       </div>
     </div>

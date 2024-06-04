@@ -4,7 +4,6 @@ const verifyToken = require("../verifyToken");
 const router = express.Router();
 
 router.post("/", verifyToken, async (req, res) => {
-  console.log("post income!");
   const {
     source,
     amount,
@@ -31,13 +30,32 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 router.get("/", verifyToken, async (req, res) => {
-  console.log("get incomes");
+  const { category, amount, amountCondition, registeredDate, dateCondition } =
+    req.query;
 
-  const { category } = req.query;
-
-  let query = { userID: req.user.id };
+  let query = {};
   if (category) {
     query.category = { $regex: new RegExp(category, "i") };
+  }
+  if (amount) {
+    const amountValue = parseFloat(amount);
+    if (amountCondition === "equal") {
+      query.amount = amountValue;
+    } else if (amountCondition === "bigger") {
+      query.amount = { $gt: amountValue };
+    } else if (amountCondition === "smaller") {
+      query.amount = { $lt: amountValue };
+    }
+  }
+  if (registeredDate) {
+    const dateValue = new Date(registeredDate);
+    if (dateCondition === "equal") {
+      query.registeredDate = dateValue;
+    } else if (dateCondition === "bigger") {
+      query.registeredDate = { $gt: dateValue };
+    } else if (dateCondition === "smaller") {
+      query.registeredDate = { $lt: dateValue };
+    }
   }
 
   try {
@@ -49,7 +67,6 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 router.get("/:incomeId", verifyToken, async (req, res) => {
-  console.log("get income");
   const { incomeId } = req.params;
   try {
     const income = await Income.findById(incomeId);
@@ -60,7 +77,6 @@ router.get("/:incomeId", verifyToken, async (req, res) => {
 });
 
 router.put("/:incomeId", verifyToken, async (req, res) => {
-  console.log("update income");
   const { incomeId } = req.params;
   const {
     source,
@@ -91,7 +107,6 @@ router.put("/:incomeId", verifyToken, async (req, res) => {
 });
 
 router.delete("/:incomeId", verifyToken, async (req, res) => {
-  console.log("delete income");
   const { incomeId } = req.params;
   try {
     await Income.findByIdAndDelete(incomeId);

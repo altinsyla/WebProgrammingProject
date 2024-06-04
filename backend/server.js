@@ -6,15 +6,15 @@ const port = process.env.PORT || 5001;
 const jwt = require("jsonwebtoken");
 const User = require("./Models/User");
 const verifyToken = require("./verifyToken.js");
-const authRoutes = require('./routes/authRoutes.js'); 
-const expenseRoutes = require('./routes/expenseRoutes.js'); 
-const incomeRoutes = require('./routes/incomeRoutes.js');
+const authRoutes = require("./routes/authRoutes.js");
+const expenseRoutes = require("./routes/expenseRoutes.js");
+const incomeRoutes = require("./routes/incomeRoutes.js");
 
 app.use(cors());
 app.use(express.json());
-app.use('/api', authRoutes);
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/incomes', incomeRoutes);
+app.use("/api", authRoutes);
+app.use("/api/expenses", expenseRoutes);
+app.use("/api/incomes", incomeRoutes);
 
 const mongoose = require("mongoose");
 const uri =
@@ -61,13 +61,6 @@ app.delete("/api/users/:id", async (req, res) => {
   res.json({ message: "User deleted successfully" });
 });
 
-// Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-/*
-   npx create-react-app client
-   cd client
-   npm install axios
-   inside client/src/ create a new file UserList.js
-   */

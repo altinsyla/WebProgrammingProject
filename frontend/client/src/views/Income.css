@@ -1,20 +1,19 @@
-
-.income-input { 
-    border-radius: 2px;
-    height: 30px;
-    padding: 2px, 1px;
-    font-family: "poppins";
-    margin-bottom: 0.5rem;
-    color: black;
-    padding-left: 5px;
+.income-input {
+  border-radius: 2px;
+  height: 30px;
+  padding: 2px, 1px;
+  font-family: "poppins";
+  margin-bottom: 0.5rem;
+  color: black;
+  padding-left: 5px;
 }
 .income-label {
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: black;
-    font-weight: lighter;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  color: black;
+  font-weight: lighter;
 }
-.income-header{
-    width: 100%;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: center;
+.income-header {
+  width: 100%;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-align: center;
 }

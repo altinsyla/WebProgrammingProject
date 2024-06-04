@@ -1,10 +1,10 @@
 const express = require("express");
 const Expense = require("../models/Expense");
 const verifyToken = require("../verifyToken");
+const { trusted } = require("mongoose");
 const router = express.Router();
 
 router.post("/", verifyToken, async (req, res) => {
-  console.log("post expense!");
   const { category, amount, description, date, paid } = req.body;
   try {
     const newExpense = new Expense({
@@ -23,18 +23,60 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 router.get("/", verifyToken, async (req, res) => {
-  console.log("get expenses");
-
-  const { name, amount, dateCondition, amountCondition, date } = req.query;
-
+  const {
+    name,
+    amount,
+    amountCondition,
+    dateCondition,
+    date,
+    paid,
+    paidCondition,
+    page = 1,
+    limit = 10,
+    sortField,
+    sortOrder,
+  } = req.query;
   let query = { user: req.user.id };
   if (name) {
     query.category = { $regex: new RegExp(name, "i") };
   }
+  if (amount) {
+    const amountValue = parseFloat(amount);
+    if (amountCondition === "equal") {
+      query.amount = amountValue;
+    } else if (amountCondition === "bigger") {
+      query.amount = { $gt: amountValue };
+    } else if (amountCondition === "smaller") {
+      query.amount = { $lt: amountValue };
+    }
+  }
+  if (date) {
+    const dateValue = new Date(date);
+    if (dateCondition === "equal") {
+      query.date = dateValue;
+    } else if (dateCondition === "bigger") {
+      query.date = { $gt: dateValue };
+    } else if (dateCondition === "smaller") {
+      query.date = { $lt: dateValue };
+    }
+  }
+  if (paid === "true" || paid === "false") {
+    query.paid = paid;
+  }
+  const options = {
+    skip: (page - 1) * limit,
+    limit: parseInt(limit),
+  };
+
+  if (sortField && sortOrder) {
+    options.sort = { [sortField]: sortOrder === "asc" ? 1 : -1 };
+  }
 
   try {
-    const expense = await Expense.find(query);
-    res.json(expense);
+    const expense = await Expense.find(query, null, options);
+    const total = await Expense.countDocuments(query);
+
+    res.json({ expense, total, page: parseInt(page), limit: parseInt(limit) });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -42,7 +84,6 @@ router.get("/", verifyToken, async (req, res) => {
 
 //Get one expense by ID
 router.get("/:expenseId", verifyToken, async (req, res) => {
-  console.log("get expenses");
   const { expenseId } = req.params;
   try {
     const expense = await Expense.findById(expenseId);
@@ -53,7 +94,6 @@ router.get("/:expenseId", verifyToken, async (req, res) => {
 });
 
 router.put("/:expenseId", verifyToken, async (req, res) => {
-  console.log("update expense");
   const { expenseId } = req.params; //alternativa osht req.params.expenseId
   const { category, amount, description, date, paid } = req.body;
 
@@ -76,7 +116,6 @@ router.put("/:expenseId", verifyToken, async (req, res) => {
 });
 
 router.delete("/:expenseId", verifyToken, async (req, res) => {
-  console.log("delete expense");
   const { expenseId } = req.params; //alternativa osht req.params.expenseId
   try {
     await Expense.findByIdAndDelete(expenseId);

@@ -37,18 +37,17 @@
   }
 }
 
-
-.formplaceholder{
+.formplaceholder {
   display: flex;
   justify-content: center;
 }
-.login-buttons{
+.login-buttons {
   margin-top: 2rem;
   width: 100%;
   display: flex;
   justify-content: space-evenly;
 }
-.register-buttons{
+.register-buttons {
   margin-top: 2rem;
   width: 100%;
   display: flex;

@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -27,17 +28,21 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("register button clicked");
-
     try {
       const response = await axios.post("http://localhost:5001/api/register", {
         name,
         email,
         password,
       });
-      console.log(response);
+      Swal.fire({
+        text: "Account created successfully!",
+        icon: "success",
+      });
     } catch (error) {
-      console.error("Register error", error.response.data);
+      Swal.fire({
+        text: "Something went wrong!",
+        icon: "error",
+      });
     }
   };
 

@@ -15,7 +15,7 @@ import {
   InputGroupText,
   Row,
 } from "reactstrap";
-import api from "../api.js";
+// import api from "../api.js";
 import { Link, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 
