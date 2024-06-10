@@ -30,8 +30,17 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 router.get("/", verifyToken, async (req, res) => {
-  const { category, amount, amountCondition, registeredDate, dateCondition } =
-    req.query;
+  const {
+    category,
+    amount,
+    amountCondition,
+    registeredDate,
+    dateCondition,
+    page = 1,
+    limit = 10,
+    sortField,
+    sortOrder,
+  } = req.query;
 
   let query = {};
   if (category) {
@@ -57,10 +66,18 @@ router.get("/", verifyToken, async (req, res) => {
       query.registeredDate = { $lt: dateValue };
     }
   }
+  const options = {
+    skip: (page - 1) * limit,
+    limit: parseInt(limit),
+  };
+  if (sortField && sortOrder) {
+    options.sort = { [sortField]: sortOrder === "asc" ? 1 : -1 };
+  }
 
   try {
-    const income = await Income.find(query);
-    res.json(income);
+    const income = await Income.find(query, null, options);
+    const total = await Income.countDocuments(query);
+    res.json({ income, total, page: parseInt(page), limit: parseInt(limit) });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

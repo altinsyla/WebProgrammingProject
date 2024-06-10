@@ -9,12 +9,19 @@ import Swal from "sweetalert2";
 function IncomeDashboard() {
   const [incomes, setIncomes] = useState([]);
   const history = useHistory();
-  const [showFilterModal, setshowFilterModal] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false);
   const [filter, setFilter] = useState({
     amount: "",
+    amountCondition: "equal",
     category: "",
     registeredDate: "",
+    dateCondition: "equal",
   });
+  const [total, setTotal] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
@@ -27,8 +34,11 @@ function IncomeDashboard() {
 
   const getIncomes = async () => {
     try {
-      const response = await api.get("/incomes");
-      setIncomes(response.data);
+      const response = await api.get("/incomes", {
+        params: { ...filter, page, limit, sortField, sortOrder },
+      });
+      setIncomes(response.data.income);
+      setTotal(response.data.total);
     } catch (err) {
       console.log("You need to be logged in first!");
     }
@@ -40,7 +50,7 @@ function IncomeDashboard() {
       return;
     }
     getIncomes();
-  }, [history]);
+  }, [history, page, limit, sortField, sortOrder]);
 
   const deleteIncome = async (incomeId) => {
     try {
@@ -86,9 +96,21 @@ function IncomeDashboard() {
   };
 
   const applyFilter = async () => {
-    const response = await api.get("/incomes", { params: filter });
-    setIncomes(response.data);
-    setshowFilterModal(false);
+    setPage(1);
+    await getIncomes();
+    setShowFilterModal(false);
+  };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    getIncomes();
+  };
+
+  const handleSortChange = (field) => {
+    const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(order);
+    getIncomes();
   };
 
   return (
@@ -99,7 +121,7 @@ function IncomeDashboard() {
           Add Income
         </Link>
         <button
-          onClick={() => setshowFilterModal(true)}
+          onClick={() => setShowFilterModal(true)}
           className="btn btn-success mt-3 mr-3 mb-3"
         >
           Filter
@@ -112,18 +134,39 @@ function IncomeDashboard() {
       <h2>Income Dashboard</h2>
         <thead>
           <tr className="mainheader">
-            <th>Source</th>
-            <th>Amount</th>
+            <th onClick={() => handleSortChange("source")}>
+              Source{" "}
+              {sortField === "source"
+                ? sortOrder === "asc"
+                  ? "⬆"
+                  : "⬇"
+                : ""}
+            </th>
+            <th onClick={() => handleSortChange("amount")}>
+              Amount{" "}
+              {sortField === "amount"
+                ? sortOrder === "asc"
+                  ? "⬆"
+                  : "⬇"
+                : ""}
+            </th>
             <th>Payment Method</th>
             <th>Category</th>
             <th>Description</th>
-            <th>Registered Date</th>
+            <th onClick={() => handleSortChange("registeredDate")}>
+              Registered Date{" "}
+              {sortField === "registeredDate"
+                ? sortOrder === "asc"
+                  ? "⬆"
+                  : "⬇"
+                : ""}
+            </th>
             <th>Buttons</th>
           </tr>
         </thead>
         <tbody>
-          {incomes.map((income) => (
-            <tr className="contentrow" key={income.id}>
+          {incomes?.map((income) => (
+            <tr className="contentrow" key={income._id}>
               <td>{income.source}</td>
               <td>{income.amount}</td>
               <td>{income.paymentMethod}</td>
@@ -150,6 +193,17 @@ function IncomeDashboard() {
           ))}
         </tbody>
       </table>
+      <div className="pagination">
+        {Array.from({ length: Math.ceil(total / limit) }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => handlePageChange(i + 1)}
+            className={page === i + 1 ? "active" : ""}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
 
       {showFilterModal && (
         <div className="filter-overlay">
@@ -202,7 +256,7 @@ function IncomeDashboard() {
             </div>
             <div className="filter-buttons">
               <button onClick={applyFilter}>Apply Filter</button>
-              <button onClick={() => setshowFilterModal(false)}>Cancel</button>
+              <button onClick={() => setShowFilterModal(false)}>Cancel</button>
             </div>
           </div>
         </div>

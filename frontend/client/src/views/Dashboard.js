@@ -113,7 +113,7 @@ function Dashboard() {
   };
 
   return (
-    <div style={{ backgroundColor: "#F1EDED", height: "100%" }}>
+    <div style={{ backgroundColor: "#F1EDED", height: "100vh" }}>
       <Sidebar />
       <div className="main-div">
         <Link to="/Expenses" className="btn btn-primary mt-3 mr-2">
@@ -145,13 +145,25 @@ function Dashboard() {
               Category{" "}
               {sortField === "category"
                 ? sortOrder === "asc"
-                  ? "⬆🙂"
-                  : "🙁"
+                  ? "⬆"
+                  : "⬇"
                 : ""}
             </th>
-            <th>Amount</th>
+            <th onClick={() => handleSortChange("amount")}>
+              Amount{" "}
+              {sortField === "amount"
+                ? sortOrder === "asc"
+                  ? "⬆"
+                  : "⬇"
+                : ""}</th>
             <th>Description</th>
-            <th>Date</th>
+            <th onClick={() => handleSortChange("date")}>
+              Date{" "}
+              {sortField === "date"
+                ? sortOrder === "asc"
+                  ? "⬆"
+                  : "⬇"
+                : ""}</th>
             <th>Paid</th>
             <th>Buttons</th>
           </tr>
