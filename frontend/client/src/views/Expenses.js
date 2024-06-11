@@ -3,6 +3,7 @@ import axios from "axios";
 import api from "../../src/api.js";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import Expense from "./Expense.css"
 
 function Expenses() {
   const [formData, setFormData] = useState({

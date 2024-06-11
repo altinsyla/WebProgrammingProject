@@ -170,7 +170,7 @@ function Dashboard() {
         </thead>
         <tbody>
           {expenses.map((expense) => (
-            <tr className="contentrow" key={expense.id}>
+            <tr backgroundColor="#c0d6fa" className="contentrow" key={expense.id}>
               <td>{expense.category}</td>
               <td>{expense.amount}</td>
               <td>{expense.description}</td>

@@ -23,9 +23,9 @@ const IncomeSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    registeredDate: {
-        type: Date,
-        default: Date.now,
+    taxable: {
+        type: Boolean,
+        default: false
     },
 });
 

@@ -10,7 +10,7 @@ router.post("/", verifyToken, async (req, res) => {
     paymentMethod,
     category,
     description,
-    registeredDate,
+    taxable,
   } = req.body;
   try {
     const newIncome = new Income({
@@ -20,7 +20,7 @@ router.post("/", verifyToken, async (req, res) => {
       paymentMethod,
       category,
       description,
-      registeredDate,
+      taxable: Boolean(taxable),
     });
     await newIncome.save();
     res.status(201).json(newIncome);
@@ -36,6 +36,7 @@ router.get("/", verifyToken, async (req, res) => {
     amountCondition,
     registeredDate,
     dateCondition,
+    taxable,
     page = 1,
     limit = 10,
     sortField,
@@ -65,6 +66,10 @@ router.get("/", verifyToken, async (req, res) => {
     } else if (dateCondition === "smaller") {
       query.registeredDate = { $lt: dateValue };
     }
+  }
+
+  if (taxable === "true" || taxable === "false") {
+    query.taxable = taxable;
   }
   const options = {
     skip: (page - 1) * limit,
@@ -101,7 +106,7 @@ router.put("/:incomeId", verifyToken, async (req, res) => {
     paymentMethod,
     category,
     description,
-    registeredDate,
+    taxable,
   } = req.body;
 
   try {
@@ -113,7 +118,7 @@ router.put("/:incomeId", verifyToken, async (req, res) => {
         paymentMethod,
         category,
         description,
-        registeredDate,
+        taxable: Boolean(taxable),
       },
       { new: true }
     );

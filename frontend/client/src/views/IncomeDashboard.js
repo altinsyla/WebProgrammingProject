@@ -14,6 +14,7 @@ function IncomeDashboard() {
     amount: "",
     amountCondition: "equal",
     category: "",
+    taxable: "",
     registeredDate: "",
     dateCondition: "equal",
   });
@@ -22,6 +23,8 @@ function IncomeDashboard() {
   const [page, setPage] = useState(1);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
+
+  const [sortDirection, setSortDirection] = useState('asc');
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
@@ -105,6 +108,18 @@ function IncomeDashboard() {
     setPage(newPage);
     getIncomes();
   };
+  const sortTable = () => {
+    const sortedData = [...incomes].sort((a, b) => {
+      if (sortDirection === 'asc') {
+        return b.taxable - a.taxable;
+      } else {
+        return a.taxable - b.taxable;
+      }
+    });
+    setIncomes(sortedData);
+    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+  };
+  
 
   const handleSortChange = (field) => {
     const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
@@ -153,13 +168,8 @@ function IncomeDashboard() {
             <th>Payment Method</th>
             <th>Category</th>
             <th>Description</th>
-            <th onClick={() => handleSortChange("registeredDate")}>
-              Registered Date{" "}
-              {sortField === "registeredDate"
-                ? sortOrder === "asc"
-                  ? "⬆"
-                  : "⬇"
-                : ""}
+            <th onClick={sortTable} style={{ cursor: 'pointer' }}>
+              Taxable
             </th>
             <th>Buttons</th>
           </tr>
@@ -172,7 +182,12 @@ function IncomeDashboard() {
               <td>{income.paymentMethod}</td>
               <td>{income.category}</td>
               <td>{income.description}</td>
-              <td>{new Date(income.registeredDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</td>
+              <td><input
+                  type="checkbox"
+                  checked={income.taxable}
+                  readOnly
+                  // disabled="disabled"  e hijezon edhe slen me prek
+                /></td>
               <td>
                 <button
                   className="btn btn-primary mr-2"

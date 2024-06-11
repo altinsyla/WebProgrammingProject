@@ -12,10 +12,12 @@ function Incomes() {
     paymentMethod: "",
     category: "",
     description: "",
-    registeredDate: ""
+    taxable: false,
   });
   const history = useHistory();
   const { id } = useParams();
+  const [isChecked, setIsChecked] = useState("false");
+
 
   useEffect(() => {
     console.log(id);
@@ -28,7 +30,7 @@ function Incomes() {
             paymentMethod: response.data.paymentMethod,
             category: response.data.category,
             description: response.data.description,
-            registeredDate: response.data.registeredDate.split("T")[0],
+            taxable: response.data.taxable,
           });
           console.log(formData);
         });
@@ -39,8 +41,9 @@ function Incomes() {
 
   const onChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
   };
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -90,13 +93,14 @@ function Incomes() {
           alignContent: "center",
         }}
       >
+        
         <form
           onSubmit={onSubmit}
           style={{
             display: "flex",
             flexDirection: "column",
             width: "fit-content",
-            backgroundColor: "#F0E5E3",
+            backgroundColor: "#5A72A0",
             padding: "2rem 5rem",
             borderRadius: "10px",
             marginTop: '2rem',
@@ -157,13 +161,13 @@ function Incomes() {
             value={formData.description}
           />
 
-          <label className="income-label">Set Date</label>
+          <label className="income-label">Is Taxable</label>
           <input
             onChange={onChange}
-            type="date"
-            name="registeredDate"
+            type="checkbox"
+            name="taxable"
             className="income-input"
-            value={formData.registeredDate}
+            checked={formData.taxable}
           />
           <div className="incomes-buttons">
           <button

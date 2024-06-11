@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
-import Login from "./views/Login";
-import Register from "./views/Register";
+import Login from "./views/login.js";
+import Register from "./views/register.js";
 import Expenses from "./views/Expenses.js";
 import Dashboard from "./views/Dashboard.js";
 // import Income from './views/Income.js';

@@ -1,5 +1,6 @@
 .maindiv {
   display: flex;
+
   justify-content: center;
 }
 .main-div{
@@ -17,22 +18,26 @@ table {
   padding: 0.5rem 1rem;
 }
 .mainheader th {
+  background-color: #5A72A0;
+
   border-bottom: 1px solid gray;
 }
 
 th {
   width: 100%;
-  color: white;
-  background-color: gray;
+  background-color: #83B4FF;
+  /* */
+
 }
 
 tr {
-  display: flex;
-  background-color: gainsboro;
+  background-color: #c0d6fa;
+  height: 100%;
 }
 
 td {
-  width: 100%;
+  background-color: #c0d6fa;
+
 }
 
 .confirmDialog {
