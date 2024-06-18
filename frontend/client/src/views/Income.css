@@ -1,3 +1,12 @@
+.income-background{
+    background: linear-gradient(90deg, #fad0c4,  #ffd1ff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .income-input {
   border-radius: 2px;
   height: 30px;

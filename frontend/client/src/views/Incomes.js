@@ -77,6 +77,8 @@ function Incomes() {
   };
 
   return (
+
+    <div className="income-background">
     <div
       style={{
         display: "flex",
@@ -188,6 +190,7 @@ function Incomes() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }
