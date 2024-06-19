@@ -4,7 +4,6 @@ import './Sidebar.css';
 
 function Sidebar() {
     return (
-        <div className='main-div-sidebar'>
         <div className='sidebar'>
             <ul>
                 <li>
@@ -14,7 +13,6 @@ function Sidebar() {
                     <Link to='/incomedashboard'>Incomes</Link>
                 </li>
             </ul>
-        </div>
         </div>
     );
 }

@@ -113,7 +113,6 @@ function Dashboard() {
   };
 
   return (
-    <div className="background-dashbaord">
     <div style={{ backgroundColor: "#F1EDED", height: "100vh" }}>
       <Sidebar />
       <div className="main-div">
@@ -194,7 +193,7 @@ function Dashboard() {
                   }}
                   onClick={() => handleEdit(expense._id)}
                 >
-                  <img className="img1" src={require("../assets/img/brand/edit-246.png")} />
+                  Edit
                 </button>
                 <button
                   className="btn btn-danger mr-2"
@@ -205,7 +204,7 @@ function Dashboard() {
                   }}
                   onClick={() => confirmDelete(expense._id)}
                 >
-                   <img className="img1" src={require("../assets/img/brand/delete-589.png")} />
+                  Delete
                 </button>
               </td>
             </tr>
@@ -301,7 +300,6 @@ function Dashboard() {
           </div>
         </div>
       )}
-    </div>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 import api from "../../src/api.js";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import  "./Expense.css"
+import Expense from "./Expense.css"
 
 function Expenses() {
   const [formData, setFormData] = useState({
@@ -74,7 +74,6 @@ function Expenses() {
   //api/expenses: POST
 
   return (
-    <div className="main-div-expenses">
     <div
       style={{
         display: "flex",
@@ -172,7 +171,6 @@ function Expenses() {
           </div>
         </form>
       </div>
-    </div>
     </div>
   );
 }

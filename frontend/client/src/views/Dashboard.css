@@ -1,11 +1,3 @@
-.background-dashbaord{
-    background: linear-gradient(45deg, #0056b3, #00b3e6,  #0056b3);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-
 .maindiv {
   display: flex;
 
@@ -194,9 +186,4 @@ td {
 .pagination button.active {
   background-color: #0056b3;
   cursor: default;
-}
-.img1{
-  width: 1.2rem;
-  height: 1.2rem;
-
 }
