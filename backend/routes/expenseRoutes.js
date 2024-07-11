@@ -3,6 +3,7 @@ const Expense = require("../models/Expense");
 const verifyToken = require("../verifyToken");
 const { trusted } = require("mongoose");
 const router = express.Router();
+const checkAndNotify = require("../checkAndNotify");
 
 router.post("/", verifyToken, async (req, res) => {
   const { category, amount, description, date, paid } = req.body;
@@ -15,8 +16,11 @@ router.post("/", verifyToken, async (req, res) => {
       date,
       paid: Boolean(paid),
     });
+
+    await checkAndNotify(req.user.id, 2);
     await newExpense.save();
     res.status(201).json(newExpense);
+    res.status(201);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -96,7 +100,7 @@ router.get("/:expenseId", verifyToken, async (req, res) => {
 router.put("/:expenseId", verifyToken, async (req, res) => {
   const { expenseId } = req.params; //alternativa osht req.params.expenseId
   const { category, amount, description, date, paid } = req.body;
-
+  await checkAndNotify(req.user.id, 2)
   try {
     const updatedExpense = await Expense.findByIdAndUpdate(
       expenseId,

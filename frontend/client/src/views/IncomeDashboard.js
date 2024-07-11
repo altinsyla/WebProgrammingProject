@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import api from "../api";
 import "./Dashboard.css";
 import { Link, useHistory } from "react-router-dom";
-import Sidebar from './Sidebar';
-import './IncomeDashboard.css';
+import Sidebar from "./Sidebar";
+import "./IncomeDashboard.css";
 import Swal from "sweetalert2";
 
 function IncomeDashboard() {
@@ -24,7 +24,7 @@ function IncomeDashboard() {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  const [sortDirection, setSortDirection] = useState('asc');
+  const [sortDirection, setSortDirection] = useState("asc");
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
@@ -61,14 +61,13 @@ function IncomeDashboard() {
       Swal.fire({
         title: "Deleted!",
         text: "Your income has been deleted.",
-        icon: "success"
+        icon: "success",
       });
       getIncomes();
     } catch (err) {
-      console.error("Failed to delete income", err);
       Swal.fire({
         title: "Error!",
-        text: "Failed to delete income!",
+        text: err.response.data.message, // Display the error message from the backend
         icon: "error",
       });
     }
@@ -77,7 +76,6 @@ function IncomeDashboard() {
   const handleEdit = (incomeId) => {
     history.push("/incomes/edit/" + incomeId);
   };
-
   const confirmDelete = (incomeId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -85,7 +83,7 @@ function IncomeDashboard() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
         deleteIncome(incomeId);
@@ -95,7 +93,10 @@ function IncomeDashboard() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilter({ ...filter, [name]: name === "amount" ? parseFloat(value) : value });
+    setFilter({
+      ...filter,
+      [name]: name === "amount" ? parseFloat(value) : value,
+    });
   };
 
   const applyFilter = async () => {
@@ -110,16 +111,15 @@ function IncomeDashboard() {
   };
   const sortTable = () => {
     const sortedData = [...incomes].sort((a, b) => {
-      if (sortDirection === 'asc') {
+      if (sortDirection === "asc") {
         return b.taxable - a.taxable;
       } else {
         return a.taxable - b.taxable;
       }
     });
     setIncomes(sortedData);
-    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
   };
-  
 
   const handleSortChange = (field) => {
     const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
@@ -130,7 +130,7 @@ function IncomeDashboard() {
 
   return (
     <div className="income-dashboard">
-      <Sidebar />
+      <Sidebar></Sidebar>
       <div className="main-div">
         <Link to="/incomes" className="btn btn-primary mt-3 mr-2 mb-3">
           Add Income
@@ -141,13 +141,16 @@ function IncomeDashboard() {
         >
           Filter
         </button>
-        <button onClick={handleLogOut} className="btn btn-danger mt-3 mr-5 mb-3">
+        <button
+          onClick={handleLogOut}
+          className="btn btn-danger mt-3 mr-5 mb-3"
+        >
           Log Out
         </button>
       </div>
       <div className="content-wrapper">
         <h2>Income Dashboard</h2>
-        <table className="income-table">
+        <table className="income-table ">
           <thead>
             <tr className="mainheader">
               <th onClick={() => handleSortChange("source")}>
@@ -169,7 +172,7 @@ function IncomeDashboard() {
               <th>Payment Method</th>
               <th>Category</th>
               <th>Description</th>
-              <th onClick={sortTable} style={{ cursor: 'pointer' }}>
+              <th onClick={sortTable} style={{ cursor: "pointer" }}>
                 Taxable
               </th>
               <th>Buttons</th>
@@ -183,25 +186,37 @@ function IncomeDashboard() {
                 <td>{income.paymentMethod}</td>
                 <td>{income.category}</td>
                 <td>{income.description}</td>
-                <td><input
-                    type="checkbox"
-                    checked={income.taxable}
-                    readOnly
-                  /></td>
+                <td>
+                  <input type="checkbox" checked={income.taxable} readOnly />
+                </td>
                 <td>
                   <button
                     className="btn btn-primary mr-2"
-                    style={{ fontSize: "10px", marginTop: '5px', marginBottom: '5px' }}
+                    style={{
+                      fontSize: "10px",
+                      marginTop: "5px",
+                      marginBottom: "5px",
+                    }}
                     onClick={() => handleEdit(income._id)}
                   >
-                    <img className="img1" src={require("../assets/img/brand/edit-246.png")} />
+                    <img
+                      className="img1"
+                      src={require("../assets/img/brand/edit-246.png")}
+                    />
                   </button>
                   <button
                     className="btn btn-danger  mr-2"
-                    style={{ fontSize: "10px", marginTop: '5px', marginBottom: '5px' }}
+                    style={{
+                      fontSize: "10px",
+                      marginTop: "5px",
+                      marginBottom: "5px",
+                    }}
                     onClick={() => confirmDelete(income._id)}
                   >
-                    <img className="img1" src={require("../assets/img/brand/delete-589.png")} />
+                    <img
+                      className="img1"
+                      src={require("../assets/img/brand/delete-589.png")}
+                    />
                   </button>
                 </td>
               </tr>

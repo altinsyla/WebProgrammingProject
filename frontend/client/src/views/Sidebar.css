@@ -1,8 +1,12 @@
-
-
-
 .sidebar {
-  background: linear-gradient(90deg, #fad0c4,  #ffd1ff);
+  background: linear-gradient(
+    180deg,
+    #fad0c4,
+    #ffd1ff,
+    #fad0c4,
+    #f99af9,
+    #fad0c4
+  );
   height: 100vh;
   width: 200px;
   height: 100vh;

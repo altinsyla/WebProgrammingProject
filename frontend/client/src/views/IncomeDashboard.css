@@ -1,10 +1,9 @@
-.income-dashboard{
-  background: linear-gradient(90deg ,#fad0c4, #ff9a9e, #fad0c4);
+.income-dashboard {
+  background: linear-gradient(90deg, #fad0c4, #ff9a9e, #fad0c4);
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
-
 
 .maindiv {
   display: flex;
@@ -48,7 +47,6 @@ th {
 tr {
   text-align: center;
   display: flex;
-  background-color: gainsboro;
   border: 1px solid gray;
 }
 
@@ -56,6 +54,7 @@ td {
   width: 100%;
   color: black;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  align-self: center;
 }
 
 .filter-overlay {
@@ -155,4 +154,3 @@ td {
   background-color: #0056b3;
   cursor: default;
 }
-

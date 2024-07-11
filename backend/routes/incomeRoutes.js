@@ -2,16 +2,11 @@ const express = require("express");
 const Income = require("../models/Income");
 const verifyToken = require("../verifyToken");
 const router = express.Router();
+const checkAndNotify = require("../checkAndNotify");
 
 router.post("/", verifyToken, async (req, res) => {
-  const {
-    source,
-    amount,
-    paymentMethod,
-    category,
-    description,
-    taxable,
-  } = req.body;
+  const { source, amount, paymentMethod, category, description, taxable } =
+    req.body;
   try {
     const newIncome = new Income({
       userID: req.user.id,
@@ -100,14 +95,8 @@ router.get("/:incomeId", verifyToken, async (req, res) => {
 
 router.put("/:incomeId", verifyToken, async (req, res) => {
   const { incomeId } = req.params;
-  const {
-    source,
-    amount,
-    paymentMethod,
-    category,
-    description,
-    taxable,
-  } = req.body;
+  const { source, amount, paymentMethod, category, description, taxable } =
+    req.body;
 
   try {
     const updatedIncome = await Income.findByIdAndUpdate(
@@ -131,6 +120,7 @@ router.put("/:incomeId", verifyToken, async (req, res) => {
 router.delete("/:incomeId", verifyToken, async (req, res) => {
   const { incomeId } = req.params;
   try {
+    await checkAndNotify(req.user.id, 1); // Use req.user.id or req.user._id depending on what your token decoding returns
     await Income.findByIdAndDelete(incomeId);
     res.status(204).send();
   } catch (error) {

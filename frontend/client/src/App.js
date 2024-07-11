@@ -8,6 +8,7 @@ import Dashboard from "./views/Dashboard.js";
 import Incomes from './views/Incomes.js';
 import { BrowserRouter, Route, Switch } from "react-router-dom"; // per linqe
 import IncomeDashboard from "./views/IncomeDashboard.js";
+import Notifications from "./views/Notifications.js";
 
 function App() {
   return (
@@ -41,6 +42,10 @@ function App() {
         </Route>
         <Route exact path="/incomes/edit/:id">
           <Incomes />
+        </Route>
+
+        <Route exact path="/Notifications">
+        <Notifications></Notifications>
         </Route>
       </Switch>
     </BrowserRouter>
