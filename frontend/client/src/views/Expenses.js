@@ -3,7 +3,7 @@ import axios from "axios";
 import api from "../../src/api.js";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import "./Expense.css";
+import "./Expense.css";;
 
 function Expenses() {
   const [formData, setFormData] = useState({
@@ -139,43 +139,42 @@ function Expenses() {
               value={formData.description}
             />
 
-            <label>Set Date</label>
-            <input
-              onChange={onChange}
-              type="date"
-              placeholder="Date"
-              name="date"
-              required
-              style={{ borderRadius: "5px", padding: "2px 1px" }}
-              value={formData.date}
-            />
-            <label>Paid</label>
-            <input
-              onChange={onChange}
-              type="checkbox"
-              name="paid"
-              style={{ borderRadius: "5px", padding: "2px 1px" }}
-              checked={formData.paid}
-            />
-            <div>
-              <button
-                type="submit"
-                className="btn btn-success"
-                style={{
-                  width: "fit-content",
-                  alignSelf: "center",
-                  marginTop: "2rem",
-                  marginBottom: "2rem",
-                }}
-              >
-                {id ? "Edit expense" : "Add Expense"}
-              </button>
-              <Link to="/Dashboard" className="btn btn-danger">
-                Go to Dashboard
-              </Link>
-            </div>
-          </form>
-        </div>
+          <label>Set Date</label>
+          <input
+            onChange={onChange}
+            type="date"
+            placeholder="Date"
+            name="date"
+            required
+            style={{ borderRadius: "5px", padding: "2px 1px" }}
+            value={formData.date}
+          />
+          <label>Paid</label>
+          <input
+            onChange={onChange}
+            type="checkbox"
+            name="paid"
+            style={{ borderRadius: "5px", padding: "2px 1px" }}
+            checked={formData.paid}
+          />
+          <div>
+          <button
+            type="submit"
+            className="btn btn-success"
+            style={{
+              width: "fit-content",
+              alignSelf: "center",
+              marginTop: "2rem",
+              marginBottom: "2rem",
+            }}
+          >
+            {id ? "Edit expense" : "Add Expense"}
+          </button>
+          <Link to="/Dashboard" className="btn btn-danger">
+            Go to Dashboard
+          </Link>
+          </div>
+        </form>
       </div>
     </div>
   );

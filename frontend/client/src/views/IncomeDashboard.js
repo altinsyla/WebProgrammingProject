@@ -129,8 +129,8 @@ function IncomeDashboard() {
   };
 
   return (
-    <div className="income-dashboard">
-      <Sidebar></Sidebar>
+    <div style={{ backgroundColor: '#F1EDED', height: "100vh" }}>
+      <Sidebar />
       <div className="main-div">
         <Link to="/incomes" className="btn btn-primary mt-3 mr-2 mb-3">
           Add Income
@@ -148,92 +148,79 @@ function IncomeDashboard() {
           Log Out
         </button>
       </div>
-      <div className="content-wrapper">
-        <h2>Income Dashboard</h2>
-        <table className="income-table ">
-          <thead>
-            <tr className="mainheader">
-              <th onClick={() => handleSortChange("source")}>
-                Source{" "}
-                {sortField === "source"
-                  ? sortOrder === "asc"
-                    ? "⬆"
-                    : "⬇"
-                  : ""}
-              </th>
-              <th onClick={() => handleSortChange("amount")}>
-                Amount{" "}
-                {sortField === "amount"
-                  ? sortOrder === "asc"
-                    ? "⬆"
-                    : "⬇"
-                  : ""}
-              </th>
-              <th>Payment Method</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th onClick={sortTable} style={{ cursor: "pointer" }}>
-                Taxable
-              </th>
-              <th>Buttons</th>
+      <table style={{width: '80%', display:'flex', flexDirection: "column", marginLeft: "270px"}}>
+      <h2>Income Dashboard</h2>
+        <thead>
+          <tr className="mainheader">
+            <th onClick={() => handleSortChange("source")}>
+              Source{" "}
+              {sortField === "source"
+                ? sortOrder === "asc"
+                  ? "⬆"
+                  : "⬇"
+                : ""}
+            </th>
+            <th onClick={() => handleSortChange("amount")}>
+              Amount{" "}
+              {sortField === "amount"
+                ? sortOrder === "asc"
+                  ? "⬆"
+                  : "⬇"
+                : ""}
+            </th>
+            <th>Payment Method</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th onClick={sortTable} style={{ cursor: 'pointer' }}>
+              Taxable
+            </th>
+            <th>Buttons</th>
+          </tr>
+        </thead>
+        <tbody>
+          {incomes?.map((income) => (
+            <tr className="contentrow" key={income._id}>
+              <td>{income.source}</td>
+              <td>{income.amount}</td>
+              <td>{income.paymentMethod}</td>
+              <td>{income.category}</td>
+              <td>{income.description}</td>
+              <td><input
+                  type="checkbox"
+                  checked={income.taxable}
+                  readOnly
+                  // disabled="disabled"  e hijezon edhe slen me prek
+                /></td>
+              <td>
+                <button
+                  className="btn btn-primary mr-2"
+                  style={{ fontSize: "10px",  marginTop: '5px', marginBottom: '5px' }}
+                  onClick={() => handleEdit(income._id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger  mr-2"
+                  style={{ fontSize: "10px", marginTop: '5px', marginBottom: '5px'}}
+                  onClick={() => confirmDelete(income._id)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {incomes?.map((income) => (
-              <tr className="contentrow" key={income._id}>
-                <td>{income.source}</td>
-                <td>{income.amount}</td>
-                <td>{income.paymentMethod}</td>
-                <td>{income.category}</td>
-                <td>{income.description}</td>
-                <td>
-                  <input type="checkbox" checked={income.taxable} readOnly />
-                </td>
-                <td>
-                  <button
-                    className="btn btn-primary mr-2"
-                    style={{
-                      fontSize: "10px",
-                      marginTop: "5px",
-                      marginBottom: "5px",
-                    }}
-                    onClick={() => handleEdit(income._id)}
-                  >
-                    <img
-                      className="img1"
-                      src={require("../assets/img/brand/edit-246.png")}
-                    />
-                  </button>
-                  <button
-                    className="btn btn-danger  mr-2"
-                    style={{
-                      fontSize: "10px",
-                      marginTop: "5px",
-                      marginBottom: "5px",
-                    }}
-                    onClick={() => confirmDelete(income._id)}
-                  >
-                    <img
-                      className="img1"
-                      src={require("../assets/img/brand/delete-589.png")}
-                    />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="pagination">
-          {Array.from({ length: Math.ceil(total / limit) }, (_, i) => (
-            <button
-              key={i}
-              onClick={() => handlePageChange(i + 1)}
-              className={page === i + 1 ? "active" : ""}
-            >
-              {i + 1}
-            </button>
           ))}
-        </div>
+        </tbody>
+      </table>
+      <div className="pagination">
+        {Array.from({ length: Math.ceil(total / limit) }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => handlePageChange(i + 1)}
+            className={page === i + 1 ? "active" : ""}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
 
       {showFilterModal && (
@@ -268,21 +255,15 @@ function IncomeDashboard() {
               </select>
             </div>
             <div className="filter-group">
-              <label>Date:</label>
-              <input
-                type="date"
-                name="registeredDate"
-                value={filter.registeredDate}
-                onChange={handleFilterChange}
-              />
+              <label>Taxable:</label>
               <select
-                name="dateCondition"
-                value={filter.dateCondition}
+                name="taxable"
+                value={filter.taxable}
                 onChange={handleFilterChange}
               >
-                <option value="equal">Equal</option>
-                <option value="bigger">Bigger</option>
-                <option value="smaller">Smaller</option>
+                <option value="">Any</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
               </select>
             </div>
             <div className="filter-buttons">
