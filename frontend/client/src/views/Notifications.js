@@ -28,7 +28,9 @@ function Notifications() {
   return (
     <div>
       <h1>Notifications</h1>
-      <button onClick={() => console.log(notifications)}>cadaw</button>
+      <button onClick={() => console.log(notifications)}>
+        Delete Notifications
+      </button>
       <ul>
         {notifications?.map((notification) => (
           <li key={notification._id}>
