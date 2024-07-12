@@ -50,7 +50,8 @@ const Login = () => {
         password,
       });
 
-      localStorage.setItem("token", response.data);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userID", response.data.userId);
       setToken(response.data);
       history.push("/Dashboard");
       Swal.fire({
@@ -58,7 +59,7 @@ const Login = () => {
         icon: "success",
       });
     } catch (error) {
-      console.error("Login error", error.response.data);
+      console.error(error);
     }
   };
 

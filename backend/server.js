@@ -67,3 +67,4 @@ app.listen(port, () => {
 });
 
 app.use("/api/notifications", notificationsRoute);
+

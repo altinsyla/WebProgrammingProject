@@ -4,10 +4,12 @@ import Swal from "sweetalert2";
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
+  const [userID, setuserID] = useState(localStorage.getItem("userID"));
 
   const getNotifications = async () => {
     try {
-      const response = await api.get("/notifications");
+      const response = await api.get("/notifications/" + userID);
+      console.log(response.data);
       setNotifications(response.data);
     } catch (error) {
       Swal.fire({
@@ -26,10 +28,12 @@ function Notifications() {
   return (
     <div>
       <h1>Notifications</h1>
+      <button onClick={() => console.log(notifications)}>cadaw</button>
       <ul>
-        {notifications.map((notification) => (
+        {notifications?.map((notification) => (
           <li key={notification._id}>
-            {notification.message} - {new Date(notification.createdAt).toLocaleString()}
+            {notification.message} -{" "}
+            {new Date(notification.createdAt).toLocaleString()}
           </li>
         ))}
       </ul>

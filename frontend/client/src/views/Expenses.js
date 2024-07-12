@@ -177,6 +177,7 @@ function Expenses() {
         </form>
       </div>
     </div>
+    </div>
   );
 }
 
